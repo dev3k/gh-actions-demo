@@ -15,4 +15,4 @@ jobs:
           cd second-action-react
           npm ci
       - name: Run Tests
-        run: npm test
+        run: cd second-action-react && npm test
