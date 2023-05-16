@@ -1,0 +1,8 @@
+name: Third Workflow - Viewing Github Context
+on: workflow_dispatch
+jobs:
+  info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Outoup Github Context
+        run: echo "${{toJson(github)}}" && echo "${{toJson(env)}}"
