@@ -1,0 +1,47 @@
+name: Deployment
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths-ignore: # ignore pathes for push
+      - ".github/workflows/*"
+      - "second-action-rect/*"
+env: #global env settings
+  MONGODB_DB_NAME: gha-demo
+  PORT: 8080
+jobs:
+  test:
+    # you can add local env here
+    env:
+      MONGODB_CLUSTER_ADDRESS: ${{ secrets.MONGODB_CLUSTER_ADDRESS }} #check settings how to add them
+      MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+    # environment: testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-deps-${{ hashFiles('env-variables/package-lock.json') }}
+      - name: Install dependencies
+        run: cd env-variables && npm ci
+      - name: Run server
+        run: cd env-variables && npm start & npx wait-on http://127.0.0.1:$PORT
+      - name: Run tests
+        run: cd env-variables && npm test
+      - name: Output information
+        run: |
+          echo "MONGODB_USERNAME: ${{ env.MONGODB_USERNAME }}" # this will be hidden
+          echo "MONGODB_DB_NAME: ${{ env.MONGODB_DB_NAME }}" # this will be hidden
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output information
+        run: |
+          echo "MONGODB_USERNAME: ${{ env.MONGODB_USERNAME }}" # will not work
+          echo "MONGODB_DB_NAME: ${{ env.MONGODB_DB_NAME }}" # this will be hidden
