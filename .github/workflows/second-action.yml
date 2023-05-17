@@ -39,6 +39,8 @@ jobs:
     # add waiting for testing jobs first, id needs missing it will run in parallel
     needs: test
     runs-on: ubuntu-latest
+    outputs:
+      script-file: ${{ steps.publish.outputs.script-file }} #check id in publish JS filename
     steps:
       - name: Git Code
         uses: actions/checkout@v3
@@ -52,6 +54,9 @@ jobs:
           npm ci
       - name: Build Project
         run: cd second-action-react && npm run build
+      - name: Publish JS filename
+        id: publish
+        run: find second-action-react/dist/assets/*.js -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -69,6 +74,8 @@ jobs:
         with:
           name: build-files #same name as in build run
       - name: Output Build Files Content
-        run: ls
+        run: ls dist
+      - name: Output JS filename
+        run: echo "${{ needs.build.outputs.script-file }}"
       - name: Deploy
         run: echo "Deploying ..."
