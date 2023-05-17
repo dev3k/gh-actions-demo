@@ -35,8 +35,7 @@ jobs:
           npm ci
       - name: Run Tests
         run: cd second-action-react && npm test
-  deploy:
-    # add waiting for testing jobs first, id needs missing it will run in parallel
+  build:
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -52,5 +51,10 @@ jobs:
           npm ci
       - name: Build Project
         run: cd second-action-react && npm run build
+  deploy:
+    # add waiting for testing jobs first, id needs missing it will run in parallel
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy
         run: echo "Deploying ..."
