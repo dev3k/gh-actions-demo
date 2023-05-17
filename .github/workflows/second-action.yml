@@ -59,7 +59,7 @@ jobs:
         with:
           path: |
             ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }} #build a dynamic key to revalidate if lock file changed
+          key: deps-node-modules-${{ hashFiles('second-action-react/package-lock.json') }} #build a dynamic key to revalidate if lock file changed, use **/file to look into all files and compine one hash
       - name: Install Dependencies
         run: |
           cd second-action-react
