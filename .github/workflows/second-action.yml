@@ -1,11 +1,22 @@
 name: Second Workflow - Test Project & Deploy
 on:
-  push:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+      - dev
+      - "dev-*" # dev-new dev-is-new
+      - "feature/**" # feature/new feature/new/button
+    branches-ignore: # ignore branches in this workflow
+      - test
+    paths-ignore: # ignore pathes for push
+      - ".github/workflows/*"
   pull_request:
     types:
       - opened
       - reopened
+    branches:
+      - main
 jobs:
   test:
     runs-on: ubuntu-latest
