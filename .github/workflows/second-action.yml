@@ -36,6 +36,7 @@ jobs:
       - name: Run Tests
         run: cd second-action-react && npm test
   build:
+    # add waiting for testing jobs first, id needs missing it will run in parallel
     needs: test
     runs-on: ubuntu-latest
     steps:
