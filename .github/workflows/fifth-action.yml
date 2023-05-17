@@ -12,12 +12,13 @@ env: #global env settings
   PORT: 8080
 jobs:
   test:
+    environment: testing
+    # Check setting page
     # you can add local env here
     env:
       MONGODB_CLUSTER_ADDRESS: ${{ secrets.MONGODB_CLUSTER_ADDRESS }} #check settings how to add them
       MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
       MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
-    # environment: testing
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
