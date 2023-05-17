@@ -29,6 +29,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }} #build a dynamic key to revalidate if lock file changed
       - name: Install Dependencies
         run: |
           cd second-action-react
@@ -48,6 +54,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }} #build a dynamic key to revalidate if lock file changed
       - name: Install Dependencies
         run: |
           cd second-action-react
