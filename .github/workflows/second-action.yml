@@ -52,10 +52,23 @@ jobs:
           npm ci
       - name: Build Project
         run: cd second-action-react && npm run build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-files
+          path: |
+            second-action-react/dist
+            second-action-react/package.json
   deploy:
     # add waiting for testing jobs first, id needs missing it will run in parallel
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Get Build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-files #same name as in build run
+      - name: Output Build Files Content
+        run: ls
       - name: Deploy
         run: echo "Deploying ..."
