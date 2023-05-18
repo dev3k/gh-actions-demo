@@ -18,7 +18,7 @@ jobs:
     # you can add local env here
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb
-      MONGODB_CLUSTER_ADDRESS: mongodb #same service name if you run container
+      MONGODB_CLUSTER_ADDRESS: mongodb #same service name if you run container , if without container you need to use 127.0.0.1:27017 default port for mongo, check port section below
       MONGODB_USERNAME: root
       MONGODB_PASSWORD: example
     runs-on: ubuntu-latest
@@ -29,6 +29,8 @@ jobs:
     services:
       mongodb:
         image: mongo
+        # ports:
+        #   - 27017:27017
         env:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: example
