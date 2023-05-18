@@ -5,7 +5,7 @@ on:
       - main
       - dev
     paths-ignore: # ignore pathes for push
-      - ".github/*"
+      - ".github/**"
       - "second-action-react/*"
 env: #global env settings
   MONGODB_DB_NAME: gha-demo

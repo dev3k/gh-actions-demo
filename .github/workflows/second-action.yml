@@ -12,7 +12,7 @@ on:
     #   - test
     # cant be used you may only define one of `branches` and `branches-ignore` for a single event
     paths-ignore: # ignore pathes for push
-      - ".github/*"
+      - ".github/**"
       - "env-variables/*"
   pull_request:
     types:
