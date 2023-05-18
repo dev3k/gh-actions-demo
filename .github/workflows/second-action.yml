@@ -70,7 +70,7 @@ jobs:
       - name: Run Tests
         id: testing-code
         run: cd second-action-react && npm test
-      - name: Upload test report of test fails
+      - name: Upload test report if test fails
         # outcome values success, failure, cancelled, skipped
         # failure() success() always() cancelled()
         if: failure() && steps.testing-code.outcome == 'failure'
