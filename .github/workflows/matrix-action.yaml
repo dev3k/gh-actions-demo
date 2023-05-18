@@ -1,5 +1,6 @@
-name: Matric Workflow
+name: Matrix Workflow
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
