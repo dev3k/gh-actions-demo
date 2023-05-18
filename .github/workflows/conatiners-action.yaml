@@ -17,7 +17,7 @@ jobs:
     # Check setting page
     # you can add local env here
     env:
-      MONGODB_CONNECTOIN_PROTOCOL: mongodb
+      MONGODB_CONNECTION_PROTOCOL: mongodb
       MONGODB_CLUSTER_ADDRESS: mongodb #same service name if you run container
       MONGODB_USERNAME: root
       MONGODB_PASSWORD: example

@@ -16,6 +16,7 @@ jobs:
     # Check setting page
     # you can add local env here
     env:
+      MONGODB_CONNECTION_PROTOCOL: "mongodb+srv"
       MONGODB_CLUSTER_ADDRESS: ${{ secrets.MONGODB_CLUSTER_ADDRESS }} #check settings how to add them
       MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
       MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
