@@ -32,7 +32,7 @@ jobs:
         id: cache
         uses: actions/cache@v3
         with:
-          path: node_modules
+          path: second-action-react/node_modules
           key: deps-react-${{ hashFiles('second-action-react/package-lock.json') }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
@@ -52,7 +52,7 @@ jobs:
         id: cache
         uses: actions/cache@v3
         with:
-          path: node_modules
+          path: second-action-react/node_modules
           key: deps-react-${{ hashFiles('second-action-react/package-lock.json') }} #build a dynamic key to revalidate if lock file changed
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
@@ -87,7 +87,7 @@ jobs:
         id: cache
         uses: actions/cache@v3
         with:
-          path: node_modules
+          path: second-action-react/node_modules
           key: deps-react-${{ hashFiles('second-action-react/package-lock.json') }} #build a dynamic key to revalidate if lock file changed, use **/file to look into all files and compine one hash
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'

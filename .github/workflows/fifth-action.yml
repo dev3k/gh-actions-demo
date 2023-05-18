@@ -27,7 +27,7 @@ jobs:
         id: cache
         uses: actions/cache@v3
         with:
-          path: node_modules
+          path: env-variables/node_modules
           key: deps-node-${{ hashFiles('env-variables/package-lock.json') }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
