@@ -1,12 +1,13 @@
-name: Fifth Workflow - env
+name: Containers Workflow - env
 on:
-  push:
-    branches:
-      - main
-      - dev
-    paths-ignore: # ignore pathes for push
-      - ".github/workflows/*"
-      - "second-action-react/*"
+  workflow_call:
+#   push:
+#     branches:
+#       - main
+#       - dev
+#     paths-ignore: # ignore pathes for push
+#       - ".github/workflows/*"
+#       - "second-action-react/*"
 env: #global env settings
   MONGODB_DB_NAME: gha-demo
   PORT: 8080
@@ -16,10 +17,20 @@ jobs:
     # Check setting page
     # you can add local env here
     env:
-      MONGODB_CLUSTER_ADDRESS: ${{ secrets.MONGODB_CLUSTER_ADDRESS }} #check settings how to add them
-      MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
-      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      MONGODB_CLUSTER_ADDRESS: mongodb #same service name if you run container
+      MONGODB_USERNAME: root
+      MONGODB_PASSWORD: example
     runs-on: ubuntu-latest
+    # will run on docker hub image
+    container:
+      image: node:16
+    #   env:
+    services:
+      mongodb:
+        image: mongo
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: example
     steps:
       - name: Get Code
         uses: actions/checkout@v3
@@ -28,7 +39,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: env-variables/node_modules
-          key: deps-node-${{ hashFiles('env-variables/package-lock.json') }}
+          key: deps-node-conatiner-${{ hashFiles('env-variables/package-lock.json') }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: cd env-variables && npm ci
