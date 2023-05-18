@@ -9,10 +9,17 @@ on:
       - "env-variables/*"
 jobs:
   build:
+    # continue-on-error: true if you want to continue with all jobs in matrix if one of the matrix fails
     strategy:
       matrix:
         node-version: [16, 18]
         operating-system: [ubuntu-latest]
+        # include:
+        #   - node-version: 18
+        #     operating-system: windows
+        # exclude:
+        #   - node-version: 16
+        #     operating-system: windows
     runs-on: ${{ matrix.operating-system }}
     steps:
       - name: Get Code
