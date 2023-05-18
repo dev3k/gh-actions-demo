@@ -12,3 +12,5 @@ jobs:
     uses: ./.github/workflows/reusable-actions.yaml
     # with:
     #   artifact-name: dist-files
+    # secrets:
+    #   some-secret: ${{ secrets.MONGODB_CLUSTER_ADDRESS }}

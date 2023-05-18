@@ -7,13 +7,16 @@ on:
     #     required: true
     #     default: dist
     #     type: string
+    # secrets:
+    #   some-secret:
+    #     required: true
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    #   - name: Get code
-    #     uses: actions/download-artifact@v3
-    #     with:
-    #       name: ${{ inputs.artifact-name }}
+      #   - name: Get code
+      #     uses: actions/download-artifact@v3
+      #     with:
+      #       name: ${{ inputs.artifact-name }}
       - name: Output information
         run: echo "Deploying"
