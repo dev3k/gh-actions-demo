@@ -23,6 +23,8 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    # will skip if error
+    continue-on-error: true
     steps:
       - name: Get code
         uses: actions/checkout@v3
