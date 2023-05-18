@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     # will run on docker hub image
     container:
-      image: node:16
+      image: node:18
     #   env:
     services:
       mongodb:
@@ -34,14 +34,14 @@ jobs:
     steps:
       - name: Get Code
         uses: actions/checkout@v3
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: env-variables/node_modules
-          key: deps-node-conatiner-${{ hashFiles('env-variables/package-lock.json') }}
+    #   - name: Cache dependencies
+    #     id: cache
+    #     uses: actions/cache@v3
+    #     with:
+    #       path: env-variables/node_modules
+    #       key: deps-node-conatiner-${{ hashFiles('env-variables/package-lock.json') }}
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
+        # if: steps.cache.outputs.cache-hit != 'true'
         run: cd env-variables && npm ci
       - name: Run server
         run: cd env-variables && npm start & npx wait-on http://127.0.0.1:$PORT
