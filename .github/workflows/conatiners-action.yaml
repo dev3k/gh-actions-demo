@@ -1,6 +1,6 @@
 name: Containers Workflow - env
 on:
-  workflow_call:
+  workflow_dispatch:
 #   push:
 #     branches:
 #       - main
