@@ -31,7 +31,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: deps-node-modules-react-${{ hashFiles('second-action-react/package-lock.json') }}
+          key: deps-react-${{ hashFiles('second-action-react/package-lock.json') }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: cd second-action-react && npm ci
@@ -51,7 +51,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: deps-node-modules-react-${{ hashFiles('second-action-react/package-lock.json') }} #build a dynamic key to revalidate if lock file changed
+          key: deps-react-${{ hashFiles('second-action-react/package-lock.json') }} #build a dynamic key to revalidate if lock file changed
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
@@ -86,7 +86,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: deps-node-modules-react-${{ hashFiles('second-action-react/package-lock.json') }} #build a dynamic key to revalidate if lock file changed, use **/file to look into all files and compine one hash
+          key: deps-react-${{ hashFiles('second-action-react/package-lock.json') }} #build a dynamic key to revalidate if lock file changed, use **/file to look into all files and compine one hash
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
