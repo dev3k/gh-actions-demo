@@ -12,7 +12,7 @@ on:
     #   - test
     # cant be used you may only define one of `branches` and `branches-ignore` for a single event
     paths-ignore: # ignore pathes for push
-      - ".github/workflows/*"
+      - ".github/*"
       - "env-variables/*"
   pull_request:
     types:
@@ -28,15 +28,17 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: second-action-react/node_modules
-          key: deps-react-${{ hashFiles('second-action-react/package-lock.json') }}
-      - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: cd second-action-react && npm ci
+      - name: Load and Cache Deps
+        uses: ./github/actions/cached-deps-react
+      # - name: Cache dependencies
+      #   id: cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: second-action-react/node_modules
+      #     key: deps-react-${{ hashFiles('second-action-react/package-lock.json') }}
+      # - name: Install dependencies
+      #   if: steps.cache.outputs.cache-hit != 'true'
+      #   run: cd second-action-react && npm ci
       - name: Lint code
         run: cd second-action-react && npm run lint
   test:
@@ -44,7 +46,7 @@ jobs:
     # will run on docker hub image
     # container:
     #   image: node:16
-      # env:
+    # env:
     steps:
       - name: Git Code
         uses: actions/checkout@v3
@@ -52,17 +54,19 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: second-action-react/node_modules
-          key: deps-react-${{ hashFiles('second-action-react/package-lock.json') }} #build a dynamic key to revalidate if lock file changed
-      - name: Install Dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          cd second-action-react
-          npm ci
+      - name: Load and Cache Deps
+        uses: ./github/actions/cached-deps-react
+      # - name: Cache dependencies
+      #   id: cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: second-action-react/node_modules
+      #     key: deps-react-${{ hashFiles('second-action-react/package-lock.json') }} #build a dynamic key to revalidate if lock file changed
+      # - name: Install Dependencies
+      #   if: steps.cache.outputs.cache-hit != 'true'
+      #   run: |
+      #     cd second-action-react
+      #     npm ci
       - name: Run Tests
         id: testing-code
         run: cd second-action-react && npm test
@@ -87,17 +91,19 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: second-action-react/node_modules
-          key: deps-react-${{ hashFiles('second-action-react/package-lock.json') }} #build a dynamic key to revalidate if lock file changed, use **/file to look into all files and compine one hash
-      - name: Install Dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          cd second-action-react
-          npm ci
+      - name: Load and Cache Deps
+        uses: ./github/actions/cached-deps-react
+      # - name: Cache dependencies
+      #   id: cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: second-action-react/node_modules
+      #     key: deps-react-${{ hashFiles('second-action-react/package-lock.json') }} #build a dynamic key to revalidate if lock file changed, use **/file to look into all files and compine one hash
+      # - name: Install Dependencies
+      #   if: steps.cache.outputs.cache-hit != 'true'
+      #   run: |
+      #     cd second-action-react
+      #     npm ci
       - name: Build Project
         run: cd second-action-react && npm run build
       - name: Publish JS filename
