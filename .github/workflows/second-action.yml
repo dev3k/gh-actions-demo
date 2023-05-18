@@ -21,6 +21,22 @@ on:
     branches:
       - main
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: deps-node-modules-react-${{ hashFiles('second-action-react/package-lock.json') }}
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: cd second-action-react && npm ci
+      - name: Lint code
+        run: cd second-action-react && npm run lint
   test:
     runs-on: ubuntu-latest
     steps:
@@ -31,17 +47,27 @@ jobs:
         with:
           node-version: 18
       - name: Cache dependencies
+        id: cache
         uses: actions/cache@v3
         with:
-          path: |
-            ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }} #build a dynamic key to revalidate if lock file changed
+          path: node_modules
+          key: deps-node-modules-react-${{ hashFiles('second-action-react/package-lock.json') }} #build a dynamic key to revalidate if lock file changed
       - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           cd second-action-react
           npm ci
       - name: Run Tests
+        id: testing-code
         run: cd second-action-react && npm test
+      - name: Upload test report of test fails
+        # outcome values success, failure, cancelled, skipped
+        # failure() success() always() cancelled()
+        if: failure() && steps.testing-code.outcome == 'failure'
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: second-action-react/test.json
   build:
     # add waiting for testing jobs first, id needs missing it will run in parallel
     needs: test
@@ -56,12 +82,13 @@ jobs:
         with:
           node-version: 18
       - name: Cache dependencies
+        id: cache
         uses: actions/cache@v3
         with:
-          path: |
-            ~/.npm
-          key: deps-node-modules-${{ hashFiles('second-action-react/package-lock.json') }} #build a dynamic key to revalidate if lock file changed, use **/file to look into all files and compine one hash
+          path: node_modules
+          key: deps-node-modules-react-${{ hashFiles('second-action-react/package-lock.json') }} #build a dynamic key to revalidate if lock file changed, use **/file to look into all files and compine one hash
       - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           cd second-action-react
           npm ci
@@ -92,3 +119,12 @@ jobs:
         run: echo "${{ needs.build.outputs.script-file }}"
       - name: Deploy
         run: echo "Deploying ..."
+  report:
+    needs: [lint, deploy]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output information
+        run: |
+          echo "Something went wrong"
+          echo "${{toJson(github)}}"
