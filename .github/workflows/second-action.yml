@@ -41,6 +41,10 @@ jobs:
         run: cd second-action-react && npm run lint
   test:
     runs-on: ubuntu-latest
+    # will run on docker hub image
+    # container:
+    #   image: node:16
+      # env:
     steps:
       - name: Git Code
         uses: actions/checkout@v3
