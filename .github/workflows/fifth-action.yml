@@ -6,7 +6,7 @@ on:
       - dev
     paths-ignore: # ignore pathes for push
       - ".github/workflows/*"
-      - "second-action-rect/*"
+      - "second-action-react/*"
 env: #global env settings
   MONGODB_DB_NAME: gha-demo
   PORT: 8080
