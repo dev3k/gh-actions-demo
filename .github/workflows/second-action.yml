@@ -126,14 +126,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Get Build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: build-files #same name as in build run
-      - name: Output Build Files Content
-        run: ls dist
-      - name: Output JS filename
-        run: echo "${{ needs.build.outputs.script-file }}"
       - name: Get code
         uses: actions/checkout@v3
       - name: Cache dependencies
@@ -142,11 +134,24 @@ jobs:
         with:
           path: .github/actions/deploy-to-s3-javascript/node_modules
           key: deps-custom-js-${{ hashFiles('.github/actions/deploy-to-s3-javascript/package-lock.json') }}
-      - name: Install action dependencies
+
+      - name: Install custom action dependencies
         if: steps.cache-custom.outputs.cache-hit != 'true'
         run: |
           cd .github/actions/deploy-to-s3-javascript
           npm ci
+
+      - name: Get Build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-files #same name as in build run
+
+      - name: Output Build Files Content
+        run: ls dist
+
+      - name: Output JS filename
+        run: echo "${{ needs.build.outputs.script-file }}"
+
       - name: Run Custom Action - Javascript
         uses: ./.github/actions/deploy-to-s3-javascript
         env:
@@ -155,7 +160,7 @@ jobs:
         with:
           bucket: khaliltssbucket.kh4lil.com
           bucket-region: ap-southeast-1
-          dist-folder: ./dist
+          dist-folder: dist
       - name: Deploy
         run: echo "Deploying ..."
   report:
