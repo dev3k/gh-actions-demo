@@ -149,7 +149,7 @@ jobs:
           path: .github/actions/deploy-to-s3-javascript/node_modules
           key: deps-custom-js-${{ hashFiles('.github/actions/deploy-to-s3-javascript/package-lock.json') }}
       - name: Install action dependencies
-        if: steps.cache-cache-custom.outputs.cache-hit != 'true'
+        if: steps.cache-custom.outputs.cache-hit != 'true'
         run: |
           cd .github/actions/deploy-to-s3-javascript
           npm ci
