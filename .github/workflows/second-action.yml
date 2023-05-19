@@ -151,7 +151,14 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
+      - name: Cache dependencies
+        id: cache-custom
+        uses: actions/cache@v3
+        with:
+          path: .github/actions/deploy-to-s3-javascript/node_modules
+          key: deps-custom-js-${{ hashFiles('.github/actions/deploy-to-s3-javascript/package-lock.json') }}
       - name: Install action dependencies
+        if: steps.cache-cache-custom.outputs.cache-hit != 'true'
         run: |
           cd .github/actions/deploy-to-s3-javascript
           npm ci
