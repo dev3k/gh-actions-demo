@@ -11,6 +11,9 @@ inputs:
   dist-folder:
     description: The Folder Containing Deploy Folder
     required: true
+outputs:
+  website-url:
+    description: "The URL of that deployed website"
 runs:
   using: "node16"
   # pre: "setup.js" will be exec before main.js

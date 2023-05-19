@@ -12,7 +12,9 @@ function run() {
   const s3Uri = `s3://${bucket}`;
   // you need env var AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
   exec.exec(`aws s3 sync ${distFolder} ${s3Uri} --region ${bucketRegion}`);
-  core.notice("Hello From Custom Javascript Action");
+  // core.notice("Hello From Custom Javascript Action");
+  const websiteURL = `http://${bucket}.s3-website-${bucketRegion}.amazonaws.com`;
+  core.setOutput("website-url", websiteURL);
 }
 
 run();
