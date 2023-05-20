@@ -85,13 +85,13 @@ jobs:
         id: cache-custom
         uses: actions/cache@v3
         with:
-          path: .github/actions/deploy-to-s3-javascript/node_modules
-          key: deps-custom-js-${{ hashFiles('.github/actions/deploy-to-s3-javascript/package-lock.json') }}
+          path: .github/actions/deploy-to-s3-javascript-openid/node_modules
+          key: deps-custom-js-${{ hashFiles('.github/actions/deploy-to-s3-javascript-openid/package-lock.json') }}
 
       - name: Install custom action dependencies
         if: steps.cache-custom.outputs.cache-hit != 'true'
         run: |
-          cd .github/actions/deploy-to-s3-javascript
+          cd .github/actions/deploy-to-s3-javascript-openid
           npm ci
 
       - name: Get Build artifacts
