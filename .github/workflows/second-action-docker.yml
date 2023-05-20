@@ -1,4 +1,4 @@
-name: Second Workflow - Test Project & Deploy
+name: Second Workflow - Docker Test Project & Deploy
 on:
   workflow_dispatch:
 jobs:
