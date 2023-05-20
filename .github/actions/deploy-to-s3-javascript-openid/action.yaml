@@ -1,0 +1,21 @@
+name: "Deploy to AWS S3 with OpenID"
+description: "Deploy a static website via AWS S3"
+inputs:
+  bucket:
+    description: The S3 bucket name
+    required: true
+  bucket-region:
+    description: The S3 bucket region
+    required: true
+    # default: "us-east-1"
+  dist-folder:
+    description: The Folder Containing Deploy Folder
+    required: true
+outputs:
+  website-url:
+    description: "The URL of that deployed website"
+runs:
+  using: "node16"
+  # pre: "setup.js" will be exec before main.js
+  main: "main.js"
+  # post: "cleanup.js" will be exec after main.js
